@@ -56,6 +56,8 @@ class SurvivorBot:
     # Assign traits to survivor
     survivors[name[0]] = traits
 
+    return name[0]
+
   def recruit_builder():
     name = request_names(1, survivors)
     traits = dict()
@@ -72,6 +74,8 @@ class SurvivorBot:
     # Assign traits to survivor
     survivors[name[0]] = traits
 
+    return name[0]
+
   def recruit_genius():
     name = request_names(1, survivors)
     traits = dict()
@@ -87,6 +91,8 @@ class SurvivorBot:
     
     # Assign traits to survivor
     survivors[name[0]] = traits
+
+    return name[0]
 
   # Testers
   initial_recruit()
