@@ -11,4 +11,3 @@ GAME_SENTENCE2 = GAME_SENTENCE2A + GAME_SENTENCE2B
 GAME_SENTENCE3 = "Your goal will be to eliminate and recruit survivors to achieve a level of " + str(WIN_CONDITION) + " for all skills."
 GAME_INSTRUCTIONS = GAME_SENTENCE1 + "\n" + GAME_SENTENCE2 + "\n" + GAME_SENTENCE3 + "\n"
 GAME_GOOD_LUCK = "Good luck and happy surviving!"
-INITIAL_RECRUIT_GREETING = "\nHere are your initial recruits: \n"

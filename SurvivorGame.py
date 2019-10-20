@@ -9,10 +9,8 @@ def main():
   print(constants.GAME_GOOD_LUCK)
   print("\n")
 
-  # initialize set of survivors as initially empty
-  survivors = dict()
   # recruit initial survivors
-  SurvivorBot.initial_recruit(survivors)
+  SurvivorBot.initial_recruit()
 
 if __name__ == "__main__":
   main()
