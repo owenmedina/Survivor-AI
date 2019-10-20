@@ -9,17 +9,17 @@ def print_survivors(survivors):
       print("\t" + skill + ": " + str(value) + "\n")
 
 def get_skill_levels(survivors):
-  skills = dict()
-  skills["food"] = 0
-  skills["shelter"] = 0
-  skills["intellect"] = 0
-  for name, skills in survivors.items(): 
+  total_skills = dict()
+  total_skills["food"] = 0
+  total_skills["shelter"] = 0
+  total_skills["intellect"] = 0
+  for name, skills in survivors.items():
     for skill, value in skills.items():
-      skills[skill] = skills[skill] + value
+      total_skills[skill] += value
 
   # print to user
   print("Current skill levels:\n")
-  for skill, value in skills.items():
+  for skill, value in total_skills.items():
     print("\t" + skill + ": " + str(value))
   return skills
 
