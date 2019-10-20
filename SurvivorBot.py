@@ -11,6 +11,9 @@ total_skills["food"] = 0
 total_skills["shelter"] = 0
 total_skills["intellect"] = 0
 
+# counts how many people have been recruited
+survivors_recruited = 0
+
 def print_survivors():
   for name, skills in survivors.items(): 
     print(name + ":\n")
@@ -124,6 +127,9 @@ def recruit_genius():
 
 def eliminate_survivor(name):
   if name in survivors.keys():
+    name_traits = survivors[name]
+    for trait, value in name_traits.items():
+      total_skills[trait] -= value
     del survivors[name]
   else:
     print("Can't delete a non-existent survivor!")
@@ -132,5 +138,4 @@ def goal_test():
   for skill, value in total_skills.items():
     if value != constants.WIN_CONDITION:
       return False
-  
   return True
