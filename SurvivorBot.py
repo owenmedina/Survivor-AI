@@ -94,6 +94,12 @@ class SurvivorBot:
 
     return name[0]
 
+  def eliminate_survivor(name, survivors):
+  if name in survivors.keys():
+    del survivors[name]
+  else:
+    print("Can't delete a non-existent survivor!")
+
   # Testers
   initial_recruit()
   print(len(survivors))
