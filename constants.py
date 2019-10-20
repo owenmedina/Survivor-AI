@@ -1,4 +1,5 @@
 NUM_INITIAL_SURVIVORS = 12
+NUM_MAX_SURVIVORS_TO_RECRUIT = NUM_INITIAL_SURVIVORS
 NUM_SKILLS = 3
 WIN_CONDITION = 5
 # list of skills for survival
@@ -11,3 +12,9 @@ GAME_SENTENCE2 = GAME_SENTENCE2A + GAME_SENTENCE2B
 GAME_SENTENCE3 = "Your goal will be to eliminate and recruit survivors to achieve a level of " + str(WIN_CONDITION) + " for all skills."
 GAME_INSTRUCTIONS = GAME_SENTENCE1 + "\n" + GAME_SENTENCE2 + "\n" + GAME_SENTENCE3 + "\n"
 GAME_GOOD_LUCK = "Good luck and happy surviving!"
+GAME_ACTION_CHOICE = "What would you like to do? Type your answer. \n > Recruit \n > Eliminate \n > Show Survivors \n > Show Skills"
+GAME_CHOICE_RECRUIT = "What type do you wish to recruit? Type your answer. \n > Gatherer \n > Builder \n > Genius"
+GAME_CHOICE_ELIMINATE = "Who would you like to eliminate? Type the name of the survivor. Must be case-sensitive."
+INVALID_ANSWER_WARNING = "Please type a valid answer.\n"
+WIN_MESSAGE = "You've successfully won Survivor! Congratulations!"
+LOSE_MESSAGE = "Sorry, you did not win Survivor."
