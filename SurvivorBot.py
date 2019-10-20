@@ -1,5 +1,6 @@
 import requests
 import random
+import constants
 
 class SurvivorBot:
   # initialize set of survivors as initially empty
@@ -23,14 +24,14 @@ class SurvivorBot:
     return names
 
   def initial_recruit():
-    names = request_names(12, survivors)
-    for x in range(12):
+    names = request_names(constants.NUM_INITIAL_SURVIVORS, survivors)
+    for x in range(constants.NUM_INITIAL_SURVIVORS):
       traits = dict()
 
       # Give survivor specialization
       # Try to distribute specialization uniformly
-      special = essentials[x%3]
-      traits[special] = random.randint(1,3)
+      special = essentials[x%constants.NUM_ESSENTIALS]
+      traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
 
       # Make non-specialization 0
       for e in essentials:
@@ -46,7 +47,7 @@ class SurvivorBot:
 
     # Give survivor food specialization
     special = essentials[0]
-    traits[special] = random.randint(1,3)
+    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
 
     # Make non-specialization 0
     for e in essentials:
@@ -64,7 +65,7 @@ class SurvivorBot:
 
     # Give survivor shelter specialization
     special = essentials[1]
-    traits[special] = random.randint(1,3)
+    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
 
     # Make non-specialization 0
     for e in essentials:
@@ -82,7 +83,7 @@ class SurvivorBot:
 
     # Give survivor intellect specialization
     special = essentials[2]
-    traits[special] = random.randint(1,3)
+    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
 
     # Make non-specialization 0
     for e in essentials:
