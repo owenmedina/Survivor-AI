@@ -1,14 +1,19 @@
 import random
 
-# win conditions
-WIN = dict()
-WIN["strength"] = random.randint(1,5)
-WIN["intellect"] = random.randint(1,5)
-
 NUM_INITIAL_SURVIVORS = 3
+
+# skills
+MAX_SKILL_LEVEL = 5
 NUM_SKILLS = 2
 # list of skills for survival
 skills = ["strength", "intellect"]
+
+# win conditions
+WIN = dict()
+WIN["strength"] = random.randint(1,MAX_SKILL_LEVEL)
+WIN["intellect"] = random.randint(1,MAX_SKILL_LEVEL)
+
+# user messages
 GAME_GREETING = "Welcome to Survivor.....well kinda\n"
 GAME_SENTENCE1 = "This is a simplified, modified version of Survivor."
 GAME_SENTENCE2A = "In this game, you will be presented with " + str(NUM_INITIAL_SURVIVORS) + " initial survivors with varying levels of skills related to "
