@@ -134,8 +134,8 @@ def eliminate_survivor(name):
   else:
     print("Can't delete a non-existent survivor!")
 
-def goal_test():
+def goal_test(win):
   for skill, value in total_skills.items():
-    if value != constants.WIN_CONDITION:
+    if value != win:
       return False
   return True
