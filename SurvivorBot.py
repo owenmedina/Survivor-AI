@@ -7,8 +7,7 @@ survivors = dict()
 
 # initialize skills
 total_skills = dict()
-total_skills["food"] = 0
-total_skills["shelter"] = 0
+total_skills["strength"] = 0
 total_skills["intellect"] = 0
 
 # counts how many people have been recruited
@@ -50,7 +49,7 @@ def initial_recruit():
     # Give survivor specialization
     # Try to distribute specialization uniformly
     special = constants.skills[x%constants.NUM_SKILLS]
-    skills[special] = random.randint(1,constants.NUM_SKILLS)
+    skills[special] = 1
     # Update total_skills
     total_skills[special] += skills[special]
 
@@ -65,33 +64,13 @@ def initial_recruit():
   print_survivors()
   print_skill_levels()
 
-def recruit_gatherer():
+def recruit_athlete():
   name = request_names(1)
   skills = dict()
 
   # Give survivor food specialization
   special = constants.skills[0]
-  skills[special] = random.randint(1,constants.NUM_SKILLS)
-  # Update total_skills
-  total_skills[special] += skills[special]
-
-  # Make non-specialization 0
-  for e in constants.skills:
-    if e != special:
-      skills[e] = 0
-  
-  # Assign skills to survivor
-  survivors[name[0]] = skills
-
-  return name[0]
-
-def recruit_builder():
-  name = request_names(1)
-  skills = dict()
-
-  # Give survivor shelter specialization
-  special = constants.skills[1]
-  skills[special] = random.randint(1,constants.NUM_SKILLS)
+  skills[special] = 1
   # Update total_skills
   total_skills[special] += skills[special]
 
@@ -110,8 +89,8 @@ def recruit_genius():
   skills = dict()
 
   # Give survivor intellect specialization
-  special = constants.skills[2]
-  skills[special] = random.randint(1,constants.NUM_SKILLS)
+  special = constants.skills[1]
+  skills[special] = 1
   # Update total_skills
   total_skills[special] += skills[special]
 
@@ -134,8 +113,7 @@ def eliminate_survivor(name):
   else:
     print("Can't delete a non-existent survivor!")
 
-def goal_test(win):
-  for skill, value in total_skills.items():
-    if value != win:
-      return False
-  return True
+def goal_test():
+  if (total_skills["strength"] == constants.win_strength) and (total_skills["intellect"] == constants.win_intellect):
+    return True
+  return False
