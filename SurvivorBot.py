@@ -2,116 +2,118 @@ import requests
 import random
 import constants
 
-class SurvivorBot:
-  # initialize set of survivors as initially empty
-  survivors = dict()
-  # initialize list of essentials for survival
-  essentials = ["food", "shelter", "intellect"]
+# initialize set of survivors as initially empty
+survivors = dict()
 
-  def request_names(num, survivors):
-    names = list()
+# initialize skills
+total_skills = dict()
+total_skills["strength"] = 0
+total_skills["intellect"] = 0
 
-    request_uri = 'https://randomuser.me/api/?results=' + str(num)
-    response = requests.get(request_uri)
+# counts how many people have been recruited
+survivors_recruited = 0
 
-    for person in response.json()['results']:
-      new_name = person['name']['first']
-      if new_name in survivors.keys():
-        request_names(1) # request another unique name
-      else:
-        names.append(new_name)
-    
-    return names
+def print_survivors():
+  for name, skills in survivors.items(): 
+    print(name + ":\n")
+    for skill, value in skills.items():
+      print("\t" + skill + ": " + str(value) + "\n")
 
-  def initial_recruit():
-    names = request_names(constants.NUM_INITIAL_SURVIVORS, survivors)
-    for x in range(constants.NUM_INITIAL_SURVIVORS):
-      traits = dict()
+def print_skill_levels():
+  # print to user
+  print("Current skill levels:\n")
+  for skill, value in total_skills.items():
+    print("\t" + skill + ": " + str(value))
 
-      # Give survivor specialization
-      # Try to distribute specialization uniformly
-      special = essentials[x%constants.NUM_ESSENTIALS]
-      traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
+def request_names(num):
+  names = list()
 
-      # Make non-specialization 0
-      for e in essentials:
-        if e != special:
-          traits[e] = 0
-      
-      # Assign traits to survivor
-      survivors[names[x]] = traits
+  request_uri = 'https://randomuser.me/api/?results=' + str(num)
+  response = requests.get(request_uri)
 
-  def recruit_gatherer():
-    name = request_names(1, survivors)
-    traits = dict()
+  for person in response.json()['results']:
+    new_name = person['name']['first']
+    if new_name in survivors.keys():
+      request_names(1) # request another unique name
+    else:
+      names.append(new_name)
+  
+  return names
 
-    # Give survivor food specialization
-    special = essentials[0]
-    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
+def initial_recruit():
+  print("Recruiting first " + str(constants.NUM_INITIAL_SURVIVORS) + " survivors!")
+  names = request_names(constants.NUM_INITIAL_SURVIVORS)
+  for x in range(constants.NUM_INITIAL_SURVIVORS):
+    skills = dict()
 
-    # Make non-specialization 0
-    for e in essentials:
-      if e != special:
-        traits[e] = 0
-    
-    # Assign traits to survivor
-    survivors[name[0]] = traits
-
-    return name[0]
-
-  def recruit_builder():
-    name = request_names(1, survivors)
-    traits = dict()
-
-    # Give survivor shelter specialization
-    special = essentials[1]
-    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
+    # Give survivor specialization
+    # Try to distribute specialization uniformly
+    special = constants.skills[x%constants.NUM_SKILLS]
+    skills[special] = 1
+    # Update total_skills
+    total_skills[special] += skills[special]
 
     # Make non-specialization 0
-    for e in essentials:
+    for e in constants.skills:
       if e != special:
-        traits[e] = 0
+        skills[e] = 0
     
-    # Assign traits to survivor
-    survivors[name[0]] = traits
+    # Assign skills to survivor
+    survivors[names[x]] = skills
 
-    return name[0]
+  print_survivors()
+  print_skill_levels()
 
-  def recruit_genius():
-    name = request_names(1, survivors)
-    traits = dict()
+def recruit_athlete():
+  name = request_names(1)
+  skills = dict()
 
-    # Give survivor intellect specialization
-    special = essentials[2]
-    traits[special] = random.randint(1,constants.NUM_ESSENTIALS)
+  # Give survivor food specialization
+  special = constants.skills[0]
+  skills[special] = 1
+  # Update total_skills
+  total_skills[special] += skills[special]
 
-    # Make non-specialization 0
-    for e in essentials:
-      if e != special:
-        traits[e] = 0
-    
-    # Assign traits to survivor
-    survivors[name[0]] = traits
+  # Make non-specialization 0
+  for e in constants.skills:
+    if e != special:
+      skills[e] = 0
+  
+  # Assign skills to survivor
+  survivors[name[0]] = skills
 
-    return name[0]
+  return name[0]
 
-  def eliminate_survivor(name, survivors):
+def recruit_genius():
+  name = request_names(1)
+  skills = dict()
+
+  # Give survivor intellect specialization
+  special = constants.skills[1]
+  skills[special] = 1
+  # Update total_skills
+  total_skills[special] += skills[special]
+
+  # Make non-specialization 0
+  for e in constants.skills:
+    if e != special:
+      skills[e] = 0
+  
+  # Assign skills to survivor
+  survivors[name[0]] = skills
+
+  return name[0]
+
+def eliminate_survivor(name):
   if name in survivors.keys():
+    name_traits = survivors[name]
+    for trait, value in name_traits.items():
+      total_skills[trait] -= value
     del survivors[name]
   else:
     print("Can't delete a non-existent survivor!")
 
-  # Testers
-  initial_recruit()
-  print(len(survivors))
-  for name, traits in survivors.items(): 
-      print(name + ":\n")
-      for trait, value in traits.items():
-        print("\t" + trait + ": " + str(value) + "\n")
-
-  recruit_genius()
-  print(len(survivors))
-  for name, traits in survivors.items(): 
-      print(name + ":\n")
-      for trait, value in traits.items():
-        print("\t" + trait + ": " + str(value) + "\n")
+def goal_test():
+  if (total_skills["strength"] == constants.win_strength) and (total_skills["intellect"] == constants.win_intellect):
+    return True
+  return False
