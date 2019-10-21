@@ -25,6 +25,12 @@ def print_skill_levels():
   for skill, value in total_skills.items():
     print("\t" + skill + ": " + str(value))
 
+def print_goal():
+  # print to user
+  print("Goal:\n")
+  for skill, value in constants.WIN.items():
+    print("\t" + skill + ": " + str(value))
+
 def request_names(num):
   names = list()
 
@@ -114,6 +120,7 @@ def eliminate_survivor(name):
     print("Can't delete a non-existent survivor!")
 
 def goal_test():
-  if (total_skills["strength"] == constants.win_strength) and (total_skills["intellect"] == constants.win_intellect):
-    return True
-  return False
+  for trait, value in total_skills.items():
+    if (value != constants.WIN[trait]):
+      return False
+  return True

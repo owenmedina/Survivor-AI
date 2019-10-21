@@ -32,6 +32,8 @@ def main():
       SurvivorBot.print_survivors()
     elif action == "show skills":
       SurvivorBot.print_skill_levels()
+    elif action == "show goal":
+      SurvivorBot.print_goal()
     else:
       print(constants.INVALID_ANSWER_WARNING)
     
