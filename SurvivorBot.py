@@ -2,24 +2,16 @@ import requests
 import random
 import constants
 
-# initialize set of survivors as initially empty
-survivors = dict()
-
-# initialize skills
-total_skills = dict()
-total_skills["strength"] = 0
-total_skills["intellect"] = 0
-
 # counts how many people have been recruited
 survivors_recruited = 0
 
-def print_survivors():
+def print_survivors(survivors):
   for name, skills in survivors.items(): 
     print(name + ":\n")
     for skill, value in skills.items():
       print("\t" + skill + ": " + str(value) + "\n")
 
-def print_skill_levels():
+def print_skill_levels(total_skills):
   # print to user
   print("Current skill levels:\n")
   for skill, value in total_skills.items():
@@ -31,24 +23,24 @@ def print_goal():
   for skill, value in constants.WIN.items():
     print("\t" + skill + ": " + str(value))
 
-def request_names(num):
+def request_names(num, survivors):
   names = list()
 
-  request_uri = 'https://randomuser.me/api/?results=' + str(num)
+  request_uri = 'https://randomuser.me/api/?nat=us&results=' + str(num)
   response = requests.get(request_uri)
 
   for person in response.json()['results']:
     new_name = person['name']['first']
     if new_name in survivors.keys():
-      request_names(1) # request another unique name
+      request_names(1, survivors) # request another unique name
     else:
       names.append(new_name)
   
   return names
 
-def initial_recruit():
+def initial_recruit(survivors, total_skills):
   print("Recruiting first " + str(constants.NUM_INITIAL_SURVIVORS) + " survivors!")
-  names = request_names(constants.NUM_INITIAL_SURVIVORS)
+  names = request_names(constants.NUM_INITIAL_SURVIVORS, survivors)
   for x in range(constants.NUM_INITIAL_SURVIVORS):
     skills = dict()
 
@@ -67,11 +59,11 @@ def initial_recruit():
     # Assign skills to survivor
     survivors[names[x]] = skills
 
-  print_survivors()
-  print_skill_levels()
+  print_survivors(survivors)
+  print_skill_levels(total_skills)
 
-def recruit_athlete():
-  name = request_names(1)
+def recruit_athlete(survivors, total_skills):
+  name = request_names(1, survivors)
   skills = dict()
 
   # Give survivor food specialization
@@ -88,10 +80,15 @@ def recruit_athlete():
   # Assign skills to survivor
   survivors[name[0]] = skills
 
+  # Print confirmation to user
+  print(name[0] + ":\n")
+  for skill, value in skills.items():
+      print("\t" + skill + ": " + str(value) + "\n")
+
   return name[0]
 
-def recruit_genius():
-  name = request_names(1)
+def recruit_genius(survivors, total_skills):
+  name = request_names(1, survivors)
   skills = dict()
 
   # Give survivor intellect specialization
@@ -108,18 +105,24 @@ def recruit_genius():
   # Assign skills to survivor
   survivors[name[0]] = skills
 
+  # Print confirmation to user
+  print(name[0] + ":\n")
+  for skill, value in skills.items():
+      print("\t" + skill + ": " + str(value) + "\n")
+
   return name[0]
 
-def eliminate_survivor(name):
+def eliminate_survivor(name, survivors, total_skills):
   if name in survivors.keys():
     name_traits = survivors[name]
     for trait, value in name_traits.items():
       total_skills[trait] -= value
+    print("Eliminated " + name)
     del survivors[name]
   else:
     print("Can't delete a non-existent survivor!")
 
-def goal_test():
+def goal_test(total_skills):
   for trait, value in total_skills.items():
     if (value != constants.WIN[trait]):
       return False
