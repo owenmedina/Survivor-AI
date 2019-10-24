@@ -109,7 +109,16 @@ def getNeighbors(current, survivors, total_skills):
     
     return neighbors
 
-# def run_ai(strategy):
-#   if(strategy == constants.STRATEGIES[0]):
+def run_ai(strategy):
+    result = 0
+    if strategy == "bfs":
+        result = bfs([1,1], [constants.WIN["strength"], constants.WIN["intellect"]])
+    elif strategy == "dfs":
+        result = dfs([1,1], [constants.WIN["strength"], constants.WIN["intellect"]])
+    print("depth: ", result[0])
+    print("postion: ", result[1])
+    print("path: ", result[2])
+    print("visited: ", result[3])
+    print("actions: ", result[4])
 
 if __name__ == "__main__":
