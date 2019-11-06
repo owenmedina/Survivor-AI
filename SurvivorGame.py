@@ -2,6 +2,7 @@ import requests
 import random
 import constants
 import SurvivorBot
+import SurvivorAI
 
 def main():
   print(constants.GAME_GREETING)
@@ -38,6 +39,12 @@ def main():
       SurvivorBot.print_skill_levels(total_skills)
     elif action == "show goal":
       SurvivorBot.print_goal()
+    elif action == "run ai":
+      strategy = input(constants.GAME_STRATEGY_CHOICE + "\n").lower()
+      if strategy == "bfs" or strategy == "dfs":
+        SurvivorAI.run_ai(strategy)
+      else:
+        print(constants.INVALID_ANSWER_WARNING)
     else:
       print(constants.INVALID_ANSWER_WARNING)
     
