@@ -23,6 +23,7 @@ def dfs(start, goal, survivors, total_skills):
         current_skills = current[6]
 
         if current_node == goal:
+            total_skills.update(current_skills)
             return current
 
         child_nodes = getNeighbors(current_node, current_survivors, current_skills)
@@ -31,6 +32,7 @@ def dfs(start, goal, survivors, total_skills):
             if position not in visited:
                 fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
 
+    total_skills.update(skills_copy)
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
 
 def bfs(start, goal, survivors, total_skills):
@@ -53,6 +55,7 @@ def bfs(start, goal, survivors, total_skills):
         current_skills = current[6]
 
         if current_node == goal:
+            total_skills.update(current_skills)
             return current
 
         child_nodes = getNeighbors(current_node, current_survivors, current_skills)
@@ -61,6 +64,7 @@ def bfs(start, goal, survivors, total_skills):
             if position not in visited:
                 fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
 
+    total_skills.update(skills_copy)
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
 
 def getNeighbors(current, survivors, total_skills):
@@ -73,7 +77,6 @@ def getNeighbors(current, survivors, total_skills):
     y_sub = y - 1
 
     if x_sub > 0:
-        print("x_sub: " + str(x_sub))
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
         athlete = SurvivorBot.find_athlete(new_survivors)
@@ -82,7 +85,6 @@ def getNeighbors(current, survivors, total_skills):
         neighbors.append(neighbor_info)
     
     if y_sub > 0:
-        print("y_sub: " + str(y_sub))
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
         genius = SurvivorBot.find_genius(new_survivors)
@@ -93,15 +95,15 @@ def getNeighbors(current, survivors, total_skills):
     if x_add <= constants.MAX_SKILL_LEVEL:
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
-        SurvivorBot.recruit_athlete(new_survivors, new_skills)
-        neighbor_info = ([x_add, y], "recruit", "athlete", new_survivors, new_skills) 
+        athlete = SurvivorBot.recruit_athlete(new_survivors, new_skills)
+        neighbor_info = ([x_add, y], "recruit", athlete, new_survivors, new_skills) 
         neighbors.append(neighbor_info)
     
     if y_add <= constants.MAX_SKILL_LEVEL:
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
-        SurvivorBot.recruit_genius(new_survivors, new_skills)
-        neighbor_info = ([x, y_add], "recruit", "genius", new_survivors, new_skills)
+        genius = SurvivorBot.recruit_genius(new_survivors, new_skills)
+        neighbor_info = ([x, y_add], "recruit", genius, new_survivors, new_skills)
         neighbors.append(neighbor_info)
     
     return neighbors
@@ -119,5 +121,3 @@ def run_ai(strategy, survivors, skills):
     print("\nThe strategy traversed through the following path to reach the goal state:", result[2])
     print("\nThe strategy visited the following states/nodes:", result[3])
     print("\nThe actions that can be done from the resulting path are the following:", result[4])
-
-if __name__ == "__main__":

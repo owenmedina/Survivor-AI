@@ -105,7 +105,7 @@ def recruit_genius(survivors, total_skills):
   survivors[name[0]] = skills
 
   # Print confirmation to user
-  print(name[0] + ":\n")
+  print("Recruited " + name[0] + ":\n")
   for skill, value in skills.items():
       print("\t" + skill + ": " + str(value) + "\n")
 
