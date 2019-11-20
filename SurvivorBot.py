@@ -112,6 +112,18 @@ def recruit_genius(survivors, total_skills):
 
   return name[0]
 
+def find_athlete(survivors): # Finds the first athlete in survivors
+  for name, skills in survivors.items(): 
+    for skill, value in skills.items():
+        if skill == "strength" and value != 0:
+            return name
+
+def find_genius(survivors): # Finds the first genius in survivors
+  for name, skills in survivors.items(): 
+    for skill, value in skills.items():
+        if skill == "intellect" and value != 0:
+            return name
+
 def eliminate_survivor(name, survivors, total_skills):
   if name in survivors.keys():
     name_traits = survivors[name]
@@ -120,7 +132,7 @@ def eliminate_survivor(name, survivors, total_skills):
     print("Eliminated " + name)
     del survivors[name]
   else:
-    print("Can't delete a non-existent survivor!")
+    print("Can't delete a non-existent survivor: " + name)
 
 def goal_test(total_skills):
   for trait, value in total_skills.items():
