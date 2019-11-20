@@ -25,7 +25,6 @@ def print_goal():
 
 def request_names(num, survivors):
   names = list()
-
   request_uri = 'https://randomuser.me/api/?nat=us&results=' + str(num)
   response = requests.get(request_uri)
 
