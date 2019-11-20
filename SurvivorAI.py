@@ -29,23 +29,18 @@ def dfs(start, goal, survivors, total_skills):
         for node in child_nodes:
             (position, move, survivor_type, new_survivors, new_skills) = node   
             if position not in visited:
-                print("depth: ", depth + 1)
-                print("postion: ", position)
-                print("path: ", path + [position])
-                print("visited: ", visited + [position])
-                print("actions: ", actions + [move + " " + survivor_type])
-                print("survivors: ", new_survivors)
-                print("skills: ", new_skills)
                 fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
 
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
 
-def bfs(start, goal):
+def bfs(start, goal, survivors, total_skills):
+    survivors_copy = copy.deepcopy(survivors)
+    skills_copy = copy.deepcopy(total_skills)
     visited = [start]
     path = [start]
     fringe = deque()
     actions = []
-    fringe.append([0, start, path, visited, actions]) # depth, position, path, visited nodes, actions taken
+    fringe.append([0, start, path, visited, actions, survivors_copy, skills_copy]) # depth, position, path, visited nodes, actions taken
 
     while fringe:
         current = fringe.popleft()
@@ -54,17 +49,19 @@ def bfs(start, goal):
         path = current[2]
         visited = current[3]
         actions = current[4]
+        current_survivors = current[5]
+        current_skills = current[6]
 
         if current_node == goal:
             return current
 
-        child_nodes = getNeighbors(current_node)
+        child_nodes = getNeighbors(current_node, current_survivors, current_skills)
         for node in child_nodes:
-            (position, move, survivor_type) = node   
+            (position, move, survivor_type, new_survivors, new_skills) = node   
             if position not in visited:
-                fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type]])
+                fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
 
-    return [len(path), path[-1], path, visited, actions]
+    return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
 
 def getNeighbors(current, survivors, total_skills):
     neighbors = []
@@ -109,14 +106,14 @@ def getNeighbors(current, survivors, total_skills):
     
     return neighbors
 
-def run_ai(strategy):
+def run_ai(strategy, survivors, skills):
     result = 0
     if strategy == "bfs":
         print("You are using BFS!")
-        result = bfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]])
+        result = bfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
     elif strategy == "dfs":
         print("You are using DFS!")
-        result = dfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]])
+        result = dfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
     print("This strategy reached a depth of", result[0])
     print("\nThe goal state is", result[1])
     print("\nThe strategy traversed through the following path to reach the goal state:", result[2])
