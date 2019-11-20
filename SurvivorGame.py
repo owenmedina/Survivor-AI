@@ -39,7 +39,7 @@ def main():
     elif action == "run ai":
       strategy = input(constants.GAME_STRATEGY_CHOICE + "\n").lower()
       if strategy == "bfs" or strategy == "dfs":
-        SurvivorAI.run_ai(strategy)
+        SurvivorAI.run_ai(strategy, constants.survivors, constants.total_skills)
       else:
         print(constants.INVALID_ANSWER_WARNING)
     else:
