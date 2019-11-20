@@ -7,6 +7,10 @@ MAX_SKILL_LEVEL = 5
 NUM_SKILLS = 2
 # list of skills for survival
 skills = ["strength", "intellect"]
+survivors = dict()
+total_skills = dict()
+total_skills[skills[0]] = 0
+total_skills[skills[1]] = 0
 
 # win conditions
 WIN = dict()
