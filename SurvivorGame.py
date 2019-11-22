@@ -38,7 +38,7 @@ def main():
       SurvivorBot.print_goal()
     elif action == "run ai":
       strategy = input(constants.GAME_STRATEGY_CHOICE + "\n").lower()
-      if strategy == "bfs" or strategy == "dfs":
+      if strategy == "bfs" or strategy == "dfs" or strategy == "manhattan distance" or strategy == "compare" or strategy == "compared": 
         SurvivorAI.run_ai(strategy, constants.survivors, constants.total_skills)
       else:
         print(constants.INVALID_ANSWER_WARNING)

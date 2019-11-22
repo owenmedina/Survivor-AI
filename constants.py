@@ -1,5 +1,6 @@
 import random
 
+# TODO: Make strategies constant and method overloading and add phrases to survivor game and survivor AI
 NUM_INITIAL_SURVIVORS = 3
 
 # skills
