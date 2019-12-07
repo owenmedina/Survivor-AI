@@ -23,8 +23,8 @@ class PriorityQueue(object):
         try: 
             max = 0
             for i in range(len(self.queue)):
-                curr = self.queue[-1] # last element of data is always priority value
-                if curr > self.queue[max]: 
+                curr = self.queue[i][-1] # last element of data is always priority value
+                if curr > self.queue[max][-1]:
                     max = i
             item = self.queue[max] 
             del self.queue[max] 
@@ -47,7 +47,6 @@ def dfs(start, goal, survivors, total_skills):
         depth = current[0]
         current_node = current[1]
         path = current[2]
-        visited = current[3]
         actions = current[4]
         current_survivors = current[5]
         current_skills = current[6]
@@ -60,7 +59,8 @@ def dfs(start, goal, survivors, total_skills):
         for node in child_nodes:
             (position, move, survivor_type, new_survivors, new_skills) = node   
             if position not in visited:
-                fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
+                visited = visited + [position]
+                fringe.append([depth + 1, position, path + [position], visited, actions + [move + " " + survivor_type], new_survivors, new_skills])
 
     total_skills.update(skills_copy)
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
@@ -79,7 +79,6 @@ def bfs(start, goal, survivors, total_skills):
         depth = current[0]
         current_node = current[1]
         path = current[2]
-        visited = current[3]
         actions = current[4]
         current_survivors = current[5]
         current_skills = current[6]
@@ -92,7 +91,8 @@ def bfs(start, goal, survivors, total_skills):
         for node in child_nodes:
             (position, move, survivor_type, new_survivors, new_skills) = node   
             if position not in visited:
-                fringe.append([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills])
+                visited = visited + [position]
+                fringe.append([depth + 1, position, path + [position], visited, actions + [move + " " + survivor_type], new_survivors, new_skills])
 
     total_skills.update(skills_copy)
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy]
@@ -105,7 +105,8 @@ def manhattanDistance(start, goal, survivors, total_skills):
     path = [start]
     fringe = PriorityQueue()
     actions = []
-    fringe.insert([0, start, path, visited, actions, survivors_copy, skills_copy]) # depth, position, path, visited nodes, actions taken
+    manhattan_distance = getManhattanDistance(start[0], start[1])
+    fringe.insert([0, start, path, visited, actions, survivors_copy, skills_copy, manhattan_distance]) # depth, position, path, visited nodes, actions taken
 
     while fringe:
         current = fringe.pop()
@@ -113,7 +114,6 @@ def manhattanDistance(start, goal, survivors, total_skills):
         depth = current[0]
         current_node = current[1]
         path = current[2]
-        visited = current[3]
         actions = current[4]
         current_survivors = current[5]
         current_skills = current[6]
@@ -127,7 +127,8 @@ def manhattanDistance(start, goal, survivors, total_skills):
         for node in child_nodes:
             (position, move, survivor_type, new_survivors, new_skills, priority_value) = node   
             if position not in visited:
-                fringe.insert([depth + 1, position, path + [position], visited + [position], actions + [move + " " + survivor_type], new_survivors, new_skills, priority_value])
+                visited = visited + [position]
+                fringe.insert([depth + 1, position, path + [position], visited, actions + [move + " " + survivor_type], new_survivors, new_skills, priority_value])
 
     total_skills.update(skills_copy)
     return [len(path), path[-1], path, visited, actions, survivors_copy, skills_copy, priority_value]
@@ -234,11 +235,11 @@ def run_ai(strategy, survivors, skills):
         result['DFS'] = dfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
     elif strategy == "manhattan distance":
         result['MD'] = manhattanDistance([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
-    elif strategy == "compare":
+    elif strategy == "compare md to bfs":
         result['MD'] = manhattanDistance([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
         skills.update(original_skills)
         result['BFS'] = bfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
-    elif strategy == "compared":
+    elif strategy == "compare md to dfs":
         result['MD'] = manhattanDistance([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)
         skills.update(original_skills)
         result['DFS'] = dfs([constants.total_skills["strength"], constants.total_skills["intellect"]], [constants.WIN["strength"], constants.WIN["intellect"]], survivors, skills)

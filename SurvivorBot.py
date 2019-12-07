@@ -31,7 +31,8 @@ def request_names(num, survivors):
   for person in response.json()['results']:
     new_name = person['name']['first']
     if new_name in survivors.keys():
-      request_names(1, survivors) # request another unique name
+      unique_name = request_names(1, survivors)
+      names.append(unique_name[0]) # request another unique name
     else:
       names.append(new_name)
   
