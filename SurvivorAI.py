@@ -110,7 +110,6 @@ def manhattanDistance(start, goal, survivors, total_skills):
 
     while fringe:
         current = fringe.pop()
-        print("Priority:", current[-1])
         depth = current[0]
         current_node = current[1]
         path = current[2]
@@ -184,7 +183,6 @@ def getMDNeighbors(current, survivors, total_skills):
     y_sub = y - 1
 
     if x_sub > 0:
-        print("x_sub: " + str(x_sub))
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
         athlete = SurvivorBot.find_athlete(new_survivors)
@@ -194,7 +192,6 @@ def getMDNeighbors(current, survivors, total_skills):
         neighbors.append(neighbor_info)
     
     if y_sub > 0:
-        print("y_sub: " + str(y_sub))
         new_survivors = copy.deepcopy(survivors)
         new_skills = copy.deepcopy(total_skills)
         genius = SurvivorBot.find_genius(new_survivors)
@@ -246,7 +243,7 @@ def run_ai(strategy, survivors, skills):
     
     for key, value in result.items():
         print("You are using", key)
-        print("This strategy reached a depth of", value[0])
+        print("This strategy traversed", len(value[3]), "nodes.")
         print("\nThe goal state is", value[1])
         print("\nThe strategy traversed through the following path to reach the goal state:", value[2])
         print("\nThe strategy visited the following states/nodes:", value[3])

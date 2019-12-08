@@ -129,6 +129,7 @@ def eliminate_survivor(name, survivors, total_skills):
     name_traits = survivors[name]
     for trait, value in name_traits.items():
       total_skills[trait] -= value
+    print("Eliminated " + name)
     del survivors[name]
   else:
     print("Can't delete a non-existent survivor: " + name)
